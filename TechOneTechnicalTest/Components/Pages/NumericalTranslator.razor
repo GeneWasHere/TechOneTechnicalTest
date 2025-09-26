@@ -1,0 +1,16 @@
+﻿@page "/NumericalTranslator"
+@rendermode InteractiveServer
+
+<PageTitle>Numerical Translator</PageTitle>
+
+<h1>Numerical Translator</h1>
+
+<InputText id="userInput" @bind-value="UserInput" class="form-control" />
+
+<button class="btn btn-primary" @onclick="OnSubmit" style="margin-top:10px;">Submit</button>
+
+<label for="output" style="margin-top:15px;">Output:</label>
+<textarea id="output" role="status" class="form-control" rows="5" readonly>@OutputText</textarea>
+
+
+
