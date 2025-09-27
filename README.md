@@ -12,7 +12,7 @@ IO example: Input: 123 -> Output: "one hundred and twenty-three"
 ## Project Structure
 
 - `Components/` - Reusable Blazor components`
-- `Pages/` - Blazor components and pages, including the main solution for C# technical test: Such as `NumericalTranslator.razor` which is the frontend and `NumericalTranslator.razor`.cs which is the backend logic.
+- `Pages/` - Blazor components and pages, including the main solution for C# technical test: Such as `NumericalTranslator.razor` which is the frontend and `NumericalTranslator.razor.cs` which is the backend logic.
 - `wwwroot/` - Static files (CSS, JS, images)
 - `Program.cs` - Application entry point
 
