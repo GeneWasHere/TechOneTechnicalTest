@@ -24,7 +24,6 @@ namespace TechOneTechnicalTest.Components.Pages
     //At longer numbers, the performance difference was noticeable. Taking 1.6 seconds on average. 
     //In addition, there are many ways to discern and separate the digits but configuring via modulus and division was the most straightforward. An alternative may be to convert the number into a string, then process each character via an array then separate my multiples from the right-side towards the left.
 
-
     public partial class NumericalTranslator
     {
         /// <summary>
@@ -148,160 +147,8 @@ namespace TechOneTechnicalTest.Components.Pages
             {
                 OutputText = "Zero ";
             }
-            //If the number was negative, prepend "Negative"
-            if (isnegative == true)
-            {
-                OutputText = "Negative " + OutputText;
             }
             return OutputText.TrimEnd(' ');
-        }
-
-        //Array and List approach, breaking the number into segments of three digits via modulus and division
-        //Each segment of a maximum of three digits is added to an array, then processed individually, then added a list, reversed (as order is reversed for translation), then combined into a single string
-        public string ArrayTranslatorAlgorithm(long numerical)
-        {
-            //Output string and Declarables
-            string OutputText = "";
-            bool isnegative = false;
-
-            //Outline all values, digits, tens, hundreds, thousands, etc.
-            string[] digits = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
-            string[] teens = ["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
-            string[] tens = ["Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
-            string[] thousands = ["Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion", "Sextillion"];
-
-            //Create an array to hold segments of three digits
-            long[] segments = new long[7]; //Supports up to Sextillion
-            //Tracks the number of segments, 1 segment means hundreds, 2 means thousands, 3 means millions, etc. 
-            //If the segment count is 0, it means the number is maximum 999 -- 2 segments means maximum 999,999 -- 3 segments means maximum 999,999,999, etc.
-            int segmentCount = 0;
-            //List to hold the translated segments. Combined at the end.
-            List<string> segments_translated = new List<string> { };
-
-            //Preliminary checks; zero and negatives are checked before segmenting
-            if (numerical == 0)
-            {
-                return "Zero";
-            }
-            //Check if the numerical is negative, in which case, set a flag and convert to positive
-            //This is to simplify the translation process, as negative numbers are simply "Negative" + positive number in words
-            //This struggles with the lowest possible long value, as it cannot be represented as a positive number
-            if (numerical < 0)
-            {
-                isnegative = true;
-                //Handling of long negatives which cannot be represented as positive
-                if (numerical != long.MinValue)
-                {
-                    try
-                    {
-                        //Convert to positive for easier processing
-                        numerical = Math.Abs(numerical);
-                    }
-                    catch (OverflowException)
-                    {
-                        //If the number is negative and cannot be represented as positive, return an error
-                        return "Error: Number is at the lowest possible number of long, an unrealistic input";
-                    }
-                }
-                //This section is to catch the long.MinValue case, which cannot be converted to positive
-                else
-                {
-                    //Leave it as is, and handle the negative sign later
-                    //Convert the long.MinValue to long.MaxValue + 1
-                    if (numerical == long.MinValue)
-                    {
-                        numerical = long.MaxValue;
-                    }
-                }
-            }
-
-            //Separate the number into segments of three digits
-            while (numerical > 0)
-            {
-                //Get the last three digits using modulus
-                segments[segmentCount] = numerical % 1000;
-                numerical /= 1000;
-                //Increment the segment count
-                segmentCount++;
-            }
-
-            //Given each segment, translate them by building the string via the outlined digits, tens, hundreds, thousands, etc.
-            for (int i = 0; i < segmentCount; i++)
-            {
-                //Depending on the location of the segment, append thousands, millions, etc.
-                //For example, if the number of segments is 2, the first segment is thousands, 3 is millions, etc. 
-                long segment = segments[i];
-                //If the segment is 0 or empty, it is skipped
-                if (segment == 0)
-                {
-                    OutputText += "";
-                }
-                else if (segment > 0 ) //Else, keep translating into words
-                {
-                    //Current segment string to be built -- once built, it is added to the list of segments_translated
-                    string currentsegment = "";
-                    //Handle hundreds place
-                    if (segment >= 100)
-                    {
-                        currentsegment += digits[(segment / 100) - 1] + " Hundred ";
-                        segment %= 100;
-                        //Hundred exception for "and"
-                        if (segment > 0 && segmentCount == 1)
-                        {
-                            currentsegment += "and ";
-                        }
-                    }
-                    //Handle tens and units place
-                    if (segment >= 20)
-                    {
-                        //If divisible by 10, no hyphen
-                        //Hyphenation is used for numbers like Twenty-One, Thirty-Four, etc. as per example output provided
-                        if (segment % 10 == 0)
-                        {
-                            currentsegment += tens[(segment / 10) - 1] + " ";
-                            segment = 0;
-                        }
-                        else
-                        {
-                            currentsegment += tens[(segment / 10) - 1] + "-";
-                            segment %= 10;
-                        }
-                    }
-                    //Handles the teens
-                    else if (segment >= 11 && segment <= 19)
-                    {
-                        currentsegment += teens[segment - 11] + " ";
-                        segment = 0;
-                    }
-                    //Handles the ten
-                    else if (segment == 10)
-                    {
-                        currentsegment += tens[0] + " ";
-                        segment = 0;
-                    }
-                    //Handles the units place
-                    if (segment > 0 && segment <= 9)
-                    {
-                        currentsegment += digits[segment - 1] + " ";
-                    }
-                    //Handles the thousands, millions, and etc
-                    if (i > 0)
-                    {
-                        currentsegment += thousands[i - 1] + " ";
-                    }
-                    segments_translated.Add(currentsegment.TrimEnd(' '));
-                }
-            }
-            //Add "Negative" if the number was negative
-            if (isnegative == true)
-            {
-                segments_translated.Add("Negative");
-            }
-            //Combine all results for each segment, because of how segments are stored, they need to be reversed first before combining
-            //This is because the first segment is the least significant (units), then thousands, millions, etc.
-            segments_translated.Reverse();
-            OutputText = string.Join(" ", segments_translated);
-            return OutputText;
         }
 
         //OnSubmit functions for both the brute-force and array solutions
@@ -321,7 +168,6 @@ namespace TechOneTechnicalTest.Components.Pages
                 //If there are cents to process, process them with the same function
                 if (1 < separatedinput.Length)
                 {
-                    int cents = int.Parse(separatedinput[1]);
                     //Accounting for cent plurality
                     if (cents == 1)
                     {
@@ -343,49 +189,5 @@ namespace TechOneTechnicalTest.Components.Pages
             }
         }
 
-        private void OnSubmit_ArraySolution()
-        {
-            //Let OutputText be the same as UserInput for now
-            OutputText = "";
-
-            //Solution 2: Array and List approach submission for front-facing end
-            //This function is similar to the brute-force submission, but calls the ArrayTranslatorAlgorithm instead
-            try
-            {
-
-                string[] separatedinput = UserInput.Split(".");
-                long dollar = long.Parse(separatedinput[0]);
-
-                //Check if dollar or cents are in the negatives
-                //if (dollar < 0 || (1 < separatedinput.Length && int.Parse(separatedinput[1]) < 0))
-                //{
-                //    OutputText = "Error: Negative numbers are not allowed.";
-                //    return;
-                //}
-
-                if (1 < separatedinput.Length)
-                {
-                    int cents = int.Parse(separatedinput[1]);
-                    //Accounting for cent plurality
-                    if (cents == 1)
-                    {
-                        OutputText = $"{ArrayTranslatorAlgorithm(dollar)} Dollars and {ArrayTranslatorAlgorithm((long)(cents))} Cent";
-                    }
-                    else
-                    {
-                        OutputText = $"{ArrayTranslatorAlgorithm(dollar)} Dollars and {ArrayTranslatorAlgorithm((long)(cents))} Cents";
-                    }
-                }
-                else
-                {
-                    //Full dollars and no cents
-                    OutputText = $"{ArrayTranslatorAlgorithm(dollar)} Dollars";
-                }
-            }
-            catch (Exception ex)
-            {
-                OutputText += ex.Message;
-            }
-        }
     }
 }

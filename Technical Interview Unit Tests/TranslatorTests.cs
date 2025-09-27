@@ -10,7 +10,6 @@ namespace Technical_Interview_Unit_Tests
         private readonly TechOneTechnicalTest.Components.Pages.NumericalTranslator translator = new();
 
 
-        // --- Single Digit Tests ---
         [TestMethod]
         public void TestDigit_One()
         {
@@ -25,7 +24,6 @@ namespace Technical_Interview_Unit_Tests
             Assert.AreEqual("Nine", result);
         }
 
-        // --- Teen Tests ---
         [TestMethod]
         public void TestTeen_Twelve()
         {
@@ -40,7 +38,6 @@ namespace Technical_Interview_Unit_Tests
             Assert.AreEqual("Seventeen", result);
         }
 
-        // --- Tens Tests ---
         [TestMethod]
         public void TestTens_Ten()
         {
@@ -69,13 +66,9 @@ namespace Technical_Interview_Unit_Tests
             Assert.AreEqual("Thirty-Three", result);
         }
 
-        // --- Hundreds Tests ---
         [TestMethod]
-        public void TestHundred_OneHundred()
-        {
-            string result = translator.BruteTranslatorAlgorithm(100);
-            Assert.AreEqual("One Hundred", result);
-        }
+        public void TestTens_Eighty() =>
+            Assert.AreEqual("Eighty", translator.ConversionAlgorithm(80));
 
         [TestMethod]
         public void TestHundred_OneHundredTwentyThree()
@@ -98,7 +91,6 @@ namespace Technical_Interview_Unit_Tests
             Assert.AreEqual("One Hundred and Ten", result);
         }
 
-        // --- Thousands Tests ---
         [TestMethod]
         public void TestThousand_OneThousand()
         {
@@ -177,7 +169,6 @@ namespace Technical_Interview_Unit_Tests
             Assert.AreEqual("One Hundred Million One", result);
         }
 
-        // --- Billions Tests ---
         [TestMethod]
         public void TestBillion_NineBillionEightHundredSeventySixMillionFiveHundredFortyThreeThousandTwoHundredTen()
         {
@@ -206,7 +197,6 @@ namespace Technical_Interview_Unit_Tests
             Assert.AreEqual("One Hundred Billion", result);
         }
 
-        // --- Trillions Tests ---
         [TestMethod]
         public void TestTrillion_OneTrillion()
         {
@@ -228,7 +218,6 @@ namespace Technical_Interview_Unit_Tests
             Assert.AreEqual("One Trillion Two Hundred Thirty-Four Billion Five Hundred Sixty-Seven Million Eight Hundred Ninety Thousand One Hundred Twenty-Three", result);
         }
 
-        // --- Miscellaneous Tests ---
         [TestMethod]
         public void TestMisc_LeadingZeros()
         {
@@ -250,7 +239,6 @@ namespace Technical_Interview_Unit_Tests
             Assert.AreEqual("Two Billion One Hundred Forty-Seven Million Four Hundred Eighty-Three Thousand Six Hundred Forty-Seven", result);
         }
 
-        //Testing Negative numbers
         [TestMethod]
         public void TestMisc_NegativeNumber()
         {
