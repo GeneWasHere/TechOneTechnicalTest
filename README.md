@@ -22,11 +22,6 @@ To run the application locally, use:
 dotnet run
 ```
 
-## Project Structure
-
-- `Pages/` - Blazor components and pages
-- `wwwroot/` - Static files (CSS, JS, images)
-- `Program.cs` - Application entry point
 
 ## Usage
 
