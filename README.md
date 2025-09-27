@@ -1,8 +1,6 @@
 # Technical Test Submittion
-# Signed by: Eugene Ordeniza 
-# Project Started on 26/September/2025
-
-This is a Blazor application targeting .NET 8.
+Signed by: Eugene Ordeniza 
+Project Started on 26/September/2025
 
 ## Project Overview
 A .NET 8 Blazor application that provides a user interface for translating numerical values into their corresponding English words. 
@@ -65,6 +63,6 @@ dotnet test --logger:"console;verbosity=detailed"
 ```
 Test results will be displayed in the console.
 
-
+This is a Blazor application targeting .NET 8.
 
 
