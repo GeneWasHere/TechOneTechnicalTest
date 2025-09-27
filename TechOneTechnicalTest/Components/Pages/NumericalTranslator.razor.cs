@@ -42,119 +42,39 @@ namespace TechOneTechnicalTest.Components.Pages
         //User input from an HTML input element, connected via @bind in the .razor file
         private string? UserInput { get; set; }
 
-
-        //1st Initial Solution: Brute-Force approach (Iterative)
-        //The intention of this function is to handle each digit one at a time, building the string as it goes
-        //This function is iterative and handles each digit in a loop
-        public string BruteTranslatorAlgorithm(long numerical)
+        public string ConversionAlgorithm(long inputnumber)
         {
-            string OutputText = "";
-            int thousandCounter = 0;
-            bool isHundredAnd = false;
-            bool isnegative = false;
-            //Check if the numerical is negative
-            if (numerical < 0)
+            string output = "";
+            //Arrays for number words
+            string[] belowTwenty = { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
+            string[] tens = { "", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety" };
+            string[] thousands = { "", "Thousand", "Million", "Billion", "Trillion", "Quintillion", "Sextillion"};
+
+            if (inputnumber == 0) return "Zero";
+            if (inputnumber == long.MinValue) return "Input number is too small";
+            if (inputnumber < 0) return "Negative " + ConversionAlgorithm(Math.Abs(inputnumber));
+
+            //Build the output string
+            if (inputnumber < 20) return output += belowTwenty[inputnumber];
+            else if (inputnumber < 100) return output += tens[inputnumber / 10] + (inputnumber % 10 > 0 ? "-" + ConversionAlgorithm(inputnumber % 10) : "");
+            else if (inputnumber < 1000) return output += belowTwenty[inputnumber / 100] + " Hundred" + (inputnumber % 100 > 0 ? " and " + ConversionAlgorithm(inputnumber % 100) : "");
+            else
             {
-                isnegative = true;
-                //Handling of long negatives which cannot be represented as positive
-                try
+                for (int i = 0; inputnumber > 0; i++, inputnumber /= 1000)
                 {
-                    numerical = Math.Abs(numerical);
-                }
-                catch (OverflowException)
-                {
-                    //If the number is negative and cannot be represented as positive, return an error
-                    return "Error: Number is at the lowest possible numer of long, an unrealistic input";
-
+                    long seg = inputnumber % 1000;
+                    if (seg != 0)
+                        output = $"{ConversionAlgorithm(seg)} {thousands[i]}".Trim() + (output == "" ? "" : " ") + output;
                 }
             }
-            //Hundreds are treated as a special case, including "and"
-            if (numerical < 1000 && numerical >= 100)
-            {
-                isHundredAnd = true;
-            }
-            //Get all the numbers in words
-            string[] digits = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
-            string[] teens = ["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
-            string[] tens = ["Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
-            string[] thousands = ["Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion", "Sextillion"];
-            while (numerical > 0)
-            {
-                //Get the last three digits
-                long lastThree = numerical % 1000;
-                numerical /= 1000;
-                if (lastThree > 0)
-                {
-                    string segment = "";
-                    //Handle hundreds place
-                    if (lastThree >= 100)
-                    {
-
-                        //If the number is not higher than a thousand and has a hundreds place, add "and"
-
-                        segment += digits[(lastThree / 100) - 1] + " Hundred ";
-                        lastThree %= 100;
-
-                        if (isHundredAnd && lastThree > 0)
-                        {
-                            segment += "and ";
-                        }
-
-                    }
-                    //Handle tens and units place
-                    if (lastThree >= 20)
-                    {
-                        //If divisible by 10, no hyphen
-                        if (lastThree % 10 == 0)
-                        {
-                            segment += tens[(lastThree / 10) - 1] + " ";
-                            lastThree = 0;
-                        }
-                        else
-                        {
-                            segment += tens[(lastThree / 10) - 1] + "-";
-                            lastThree %= 10;
-                        }
-                    }
-                    //Handles the teens
-                    else if (lastThree >= 11 && lastThree <= 19)
-                    {
-                        segment += teens[lastThree - 11] + " ";
-                        lastThree = 0;
-                    }
-                    //Handles the ten
-                    else if (lastThree == 10)
-                    {
-                        segment += tens[0] + " ";
-                        lastThree = 0;
-                    }
-                    //Handles the units place
-                    if (lastThree > 0 && lastThree <= 9)
-                    {
-                        segment += digits[lastThree - 1] + " ";
-                    }
-                    //Append the thousands, millions, etc. place
-                    if (thousandCounter > 0)
-                    {
-                        segment += thousands[thousandCounter - 1] + " ";
-                    }
-                    OutputText = segment + OutputText;
-                }
-                thousandCounter++;
-            }
-            //Handle negative numbers and Edge Cases
-            if (OutputText == "")
-            {
-                OutputText = "Zero ";
-            }
-            }
-            return OutputText.TrimEnd(' ');
+            //Dollars and cents are dealt with in the OnSubmit function, so just return the output here
+            return output;
         }
 
         //OnSubmit functions for both the brute-force and array solutions
         //Both functions can be accessed on the webpage via buttons -- one for each solution, kept for show-of-work and comparison
 
-        private void OnSubmit_BruteForce()
+        private void OnSubmit()
         {
             //Let OutputText be the same as UserInput for now
             OutputText = "";
@@ -162,27 +82,12 @@ namespace TechOneTechnicalTest.Components.Pages
             //Solution 1: Brute-Force approach submission for front-facing end
             try
             {
-                string[] separatedinput = UserInput.Split(".");
-                long dollar = long.Parse(separatedinput[0]);
-
-                //If there are cents to process, process them with the same function
-                if (1 < separatedinput.Length)
-                {
-                    //Accounting for cent plurality
-                    if (cents == 1)
-                    {
-                        OutputText = $"{BruteTranslatorAlgorithm(dollar)} Dollars and {BruteTranslatorAlgorithm((long)(cents))} Cent";
-                    }
-                    else
-                    {
-                        OutputText = $"{BruteTranslatorAlgorithm(dollar)} Dollars and {BruteTranslatorAlgorithm((long)(cents))} Cents";
-                    }
+                if (string.IsNullOrWhiteSpace(UserInput)) OutputText = "Please enter a valid number."; else {
+                    string[] separatedinput = UserInput.Split("."); long dollar = long.Parse(separatedinput[0]); 
+                    if (separatedinput.Length == 2) OutputText = $"{ConversionAlgorithm(dollar)} Dollars and {ConversionAlgorithm((long)(int.Parse(separatedinput[1])))} Cents"; 
+                    else OutputText = $"{ConversionAlgorithm(dollar)} Dollars"; 
                 }
-                else
-                {
-                    //Full dollars and no cents
-                    OutputText = $"{BruteTranslatorAlgorithm(dollar)} Dollars";
-                }
+                
             }catch (Exception ex) {
             
                 OutputText += ex.Message;

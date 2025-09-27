@@ -4,26 +4,67 @@
 
 This is a Blazor application targeting .NET 8.
 
+## Project Overview
+A .NET 8 Blazor application that provides a user interface for translating numerical values into their corresponding English words. 
+The application consists of a front-end component for user interaction and a back-end C# logic for processing the numerical translation.
+
+IO example: Input: 123 -> Output: "one hundred and twenty-three"
+
+
+## Project Structure
+
+- `Components/` - Reusable Blazor components`
+- `Pages/` - Blazor components and pages, including the main solution for C# technical test
+		- `NumericalTranslator.razor` - Front-End component for numerical translation
+		- `NumericalTranslator.razor.cs` - Back-End C# logic for numerical translation
+- `wwwroot/` - Static files (CSS, JS, images)
+- `Program.cs` - Application entry point
+
 ## Prerequisites
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) installed
 
-## Build
+## Running and Building the Application
 
-To build the application, run:
+To get started, clone the repository and navigate to the project directory.
+Git:
+```bash
+git clone https://github.com/GeneWasHere/TechOneTechnicalTest
+```
+
+Navigate to the project directory:
+```bash
+cd TechOneTechnicalTest
+```
+To build the dependencies, run:
+```bash
+dotnet restore
+```
+
+Then, To build the application, run:
 ```bash
 dotnet build
 ```
-
-## Run
-
-To run the application locally, use:
+To run the web application locally, use:
 ```bash
 dotnet run
 ```
-
-
-## Usage
-
 After running, navigate to `https://localhost:7117; http://localhost:5268` (or the URL shown in the console) to view the app.
+
+## Run Test Suite
+
+To execute the test suite, navigate to the test project directory:
+```bash
+cd "Technical Interview Test.Tests"
+```
+Then run:
+```bash
+dotnet restore
+dotnet build
+dotnet test --logger:"console;verbosity=detailed"
+```
+Test results will be displayed in the console.
+
+
+
 
