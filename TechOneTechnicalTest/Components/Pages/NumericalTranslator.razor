@@ -8,9 +8,13 @@
 @* Input value ranging from the minimum to the maximum of long.  *@
 <InputText id="userInput" @bind-value="UserInput" class="form-control" />
 
-<button class="btn btn-primary" @onclick="OnSubmit" style="margin-top:10px;">Submit</button>
+@*Two buttons which call two different solutions, Submit2 is my final solution and submission. However, the Brute-Force solution is kept for analysis and show-of-work*@
+<button class="btn btn-primary" @onclick="OnSubmit_BruteForce" style="margin-top:10px;">Submit (Brute Force Solution)</button>
+<button class="btn btn-primary" @onclick="OnSubmit_ArraySolution" style="margin-top:10px;">Submit (Non-Brute Force Solution)</button>
 
 <label for="output" style="margin-top:15px;">Output:</label>
+
+@*Show result*@
 <textarea id="output" role="status" class="form-control" rows="5" readonly>@OutputText</textarea>
 
 
