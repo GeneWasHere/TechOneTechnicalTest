@@ -55,7 +55,7 @@ To execute the test suite, navigate to the test project directory from the paren
 ```bash
 cd "Technical Interview Tests"
 ```
-Then run:
+Then run `dotnet.restore` and `dotnet.build` if the project has not been initialised, then run the following:
 ```bash
 dotnet test --logger:"console;verbosity=detailed"
 ```
