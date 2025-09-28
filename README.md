@@ -53,7 +53,7 @@ After running, navigate to `https://localhost:7117; http://localhost:5268` (or t
 
 To execute the test suite, navigate to the test project directory from the parent directory "TechOneTechnicalTest":
 ```bash
-cd "Technical Interview Test.Tests"
+cd "Technical Interview Tests"
 ```
 Then run:
 ```bash
