@@ -6,24 +6,6 @@ using System.Runtime.CompilerServices;
 
 namespace TechOneTechnicalTest.Components.Pages
 {
-    /// <summary>
-    //Primary solution page for the Numerical Translator
-    //Background: Within this page, the user can input a numerical value (up to the limits of a long integer)
-    //and have it translated into English words representing the number, including support for decimal values (cents)
-    //Within this code-behind file, two different algorithms are implemented for the translation:
-    //The first one uses a brute-force iterative approach, handling each digit one at a time then traslating it into a string of words then combining them for the output
-    //The second one uses an array to separate the number into segments of three digits, then processes each segment recursively to build the final string
-    /// </summary>
-
-
-    //My theory and approach for this problem is to break down the number into manageable parts, then translate each part into words.
-    //My first approach was a brute-force iterative method, handling each digit one at a time but keeping track of the place value (units, tens, hundreds, thousands, etc.).
-    //It took me the longest out of all to determine the method of reserving the last three digits, then moving on to the next three digits, and so on.
-    //However, after much trial and errors with arrays and lists -- I was able to use a modulus to separate a workable digit segment of 3 digits at a time. Then remove the translated digits using division.
-    //This was the most straightforward approach I could think of, and it worked well for the brute-force method. However, it took the longest to compute, as it had to handle each digit one at a time.
-    //At longer numbers, the performance difference was noticeable. Taking 1.6 seconds on average. 
-    //In addition, there are many ways to discern and separate the digits but configuring via modulus and division was the most straightforward. An alternative may be to convert the number into a string, then process each character via an array then separate my multiples from the right-side towards the left.
-
     public partial class NumericalTranslator
     {
         /// <summary>
@@ -70,9 +52,6 @@ namespace TechOneTechnicalTest.Components.Pages
             //Dollars and cents are dealt with in the OnSubmit function, so just return the output here
             return output;
         }
-
-        //OnSubmit functions for both the brute-force and array solutions
-        //Both functions can be accessed on the webpage via buttons -- one for each solution, kept for show-of-work and comparison
 
         private void OnSubmit()
         {
