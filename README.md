@@ -57,8 +57,6 @@ cd "Technical Interview Tests"
 ```
 Then run:
 ```bash
-dotnet restore
-dotnet build
 dotnet test --logger:"console;verbosity=detailed"
 ```
 Test results will be displayed in the console.
